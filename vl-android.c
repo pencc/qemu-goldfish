@@ -1590,6 +1590,11 @@ char *qemu_find_file(int type, const char *name)
         /* Finally, try this for standalone builds under external/qemu */
         if (buf == NULL)
             buf = qemu_find_file_with_subdir(data_dir, "../../../prebuilts/qemu-kernel/x86/pc-bios/", name);
+    }  else { // KEYMAP
+        if (buf == NULL)
+            buf = qemu_find_file_with_subdir(data_dir, "../../qemu-goldfish/pc-bios/keymaps/", name);
+        if (buf == NULL)
+            buf = qemu_find_file_with_subdir(data_dir, "./etc/pc-bios/keymaps/", name);
     }
 #endif
     return buf;
