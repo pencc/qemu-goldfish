@@ -3954,6 +3954,10 @@ int main(int argc, char **argv, char **envp)
     default:
         break;
     }
+    if (android_hw->hw_lcd_width > 0 && android_hw->hw_lcd_height > 0 ) {
+        ds->surface->height = android_hw->hw_lcd_height;
+        ds->surface->width = android_hw->hw_lcd_width;
+    }
     dpy_resize(ds);
 
     dcl = ds->listeners;

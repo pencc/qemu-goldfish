@@ -477,6 +477,10 @@ parse_skin_files(const char*      skinDirPath,
         if(x && isdigit(x[1])) {
             int width = atoi(skinName);
             int height = atoi(x+1);
+            if (hwConfig->hw_lcd_height > 0 && hwConfig->hw_lcd_width > 0) {
+                width = hwConfig->hw_lcd_width;
+                height = hwConfig->hw_lcd_height;
+            }
             int bpp   = 16;
             char* y = strchr(x+1, 'x');
             if (y && isdigit(y[1])) {

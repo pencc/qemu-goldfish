@@ -406,6 +406,26 @@ int main(int argc, char **argv) {
                  "net.shared_net_ip=10.1.2.%ld", shared_net_id);
     }
 
+    // we must parse lcd resolution before parse skin file to hook resolution set
+    if(opts->lcd_resolution) {
+            char *height_s = strtok(opts->lcd_resolution, "x");
+            char *width_s = strtok(NULL, "x");
+            if(NULL != width_s && NULL != height_s) {
+                    int width_i = (int) strtol( width_s, NULL, 0 );
+                    int height_i = (int) strtol( height_s, NULL, 0 );
+                    if (width_i > 0 && width_i < 4096 && height_i > 0 && height_i < 4096) {
+                        android_hw->hw_lcd_width = width_i;
+                        android_hw->hw_lcd_height = height_i;
+                    } else {
+                        fprintf(stderr, "fail to parse lcd resolution %sx%s\n",
+                            width_s, height_s);
+                    }
+            } else {
+                fprintf(stderr, "fail to truncate lcd resolution: %s\n",
+                            (char*)opts->lcd_resolution);
+            }
+    }
+
 
     user_config_init();
     parse_skin_files(opts->skindir, opts->skin, opts, hw,

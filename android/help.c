@@ -1442,6 +1442,14 @@ help_shared_net_id(stralloc_t*  out)
 }
 
 static void
+help_lcd_resolution(stralloc_t* out)
+{
+    PRINTF(
+    "   sets LCD resolution system property on boot, example: 1024x768\n\n"
+    );
+}
+
+	static void
 help_gpu(stralloc_t* out)
 {
     PRINTF(

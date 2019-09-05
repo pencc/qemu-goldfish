@@ -154,6 +154,8 @@ OPT_PARAM( nand_limits, "<nlimits>", "enforce NAND/Flash read/write thresholds" 
 
 OPT_PARAM( gpu, "<mode>", "set hardware OpenGLES emulation mode" )
 
+OPT_PARAM( lcd_resolution, "<resolution>", "sets LCD resolution system property on boot, example: 1024x768" )
+
 OPT_PARAM( camera_back, "<mode>", "set emulation mode for a camera facing back" )
 OPT_PARAM( camera_front, "<mode>", "set emulation mode for a camera facing front" )
 OPT_FLAG( webcam_list, "lists web cameras available for emulation" )
