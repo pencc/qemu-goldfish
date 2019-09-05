@@ -23,7 +23,7 @@
  * You can route around this by using the -port or -ports options
  * to specify the ports manually.
  */
-#define MAX_ANDROID_EMULATORS  64
+#define MAX_ANDROID_EMULATORS  128
 
 /* this structure is setup when loading the virtual device
  * after that, you can read the 'flags' field to determine
