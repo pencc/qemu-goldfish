@@ -5,4 +5,4 @@ objs/*
 GPATH
 GRTAGS
 GTAGS
-
+.vscode
