@@ -1269,11 +1269,8 @@ static void pointer_event(VncState *vs, int button_mask, int x, int y)
         dz = -1;
     if (button_mask & 0x10)
         dz = 1;
-
     if (vs->absolute) {
-        kbd_mouse_event(x * 0x7FFF / (ds_get_width(vs->ds) - 1),
-                        y * 0x7FFF / (ds_get_height(vs->ds) - 1),
-                        dz, buttons);
+        kbd_mouse_event(x, y, dz, buttons);
     } else if (vnc_has_feature(vs, VNC_FEATURE_POINTER_TYPE_CHANGE)) {
         x -= 0x7FFF;
         y -= 0x7FFF;
