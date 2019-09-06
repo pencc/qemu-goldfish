@@ -126,6 +126,7 @@ struct VncState
     int absolute;
     int last_x;
     int last_y;
+    int last_btn_state;
 
     uint32_t vnc_encoding;
     uint8_t tight_quality;

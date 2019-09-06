@@ -1261,16 +1261,16 @@ static void pointer_event(VncState *vs, int button_mask, int x, int y)
 
     if (button_mask & 0x01)
         buttons |= MOUSE_EVENT_LBUTTON;
-    if (button_mask & 0x02)
-        buttons |= MOUSE_EVENT_MBUTTON;
-    if (button_mask & 0x04)
-        buttons |= MOUSE_EVENT_RBUTTON;
+    // mid btn event and right btn event is not needed in android, so we just ignore them and return
+    if (button_mask & 0x02 || button_mask & 0x04)
+        return;
     if (button_mask & 0x08)
         dz = -1;
     if (button_mask & 0x10)
         dz = 1;
     if (vs->absolute) {
-        kbd_mouse_event(x, y, dz, buttons);
+        if(buttons == 1 || buttons != vs->last_btn_state)  // btn is clicked or state changed
+            kbd_mouse_event(x, y, dz, buttons);
     } else if (vnc_has_feature(vs, VNC_FEATURE_POINTER_TYPE_CHANGE)) {
         x -= 0x7FFF;
         y -= 0x7FFF;
@@ -1284,6 +1284,7 @@ static void pointer_event(VncState *vs, int button_mask, int x, int y)
         vs->last_x = x;
         vs->last_y = y;
     }
+    vs->last_btn_state = buttons;
 
     check_pointer_type_change(vs, kbd_mouse_is_absolute());
 }
