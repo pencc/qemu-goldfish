@@ -1359,10 +1359,29 @@ static void do_key_event(VncState *vs, int down, int keycode, int sym)
     if (is_graphic_console()) {
         if (keycode & 0x80)
             kbd_put_keycode(0xe0);
-        if (down)
-            kbd_put_keycode(keycode & 0x7f);
-        else
-            kbd_put_keycode(keycode | 0x80);
+        if (down) {
+            // TODO urgly
+            switch (keycode & 0x7f)
+            {
+            case 1: // ESC
+                kbd_put_keycode(670);   // BACK
+                break;
+            default:
+                VNC_DEBUG("keycode & 0x7f: %d\n",  keycode & 0x7f);
+                break;
+            }
+        }
+        else{
+            switch (keycode | 0x80)
+            {
+            case 129: // ESC
+                kbd_put_keycode(158);  // BACK
+                break;
+            default:
+                VNC_DEBUG("keycode | 0x80: %d\n",  keycode | 0x80);
+                break;
+            }
+        }
     } else {
         /* QEMU console emulation */
         if (down) {
