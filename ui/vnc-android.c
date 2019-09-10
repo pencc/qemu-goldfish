@@ -751,7 +751,7 @@ static void vnc_update_client(void *opaque)
 
                 for (x = 0; x < vs->guest.ds->width;
                      x += 16, guest_ptr += cmp_bytes, server_ptr += cmp_bytes) {
-                    if (!vnc_get_bit(vs->guest.dirty[y], (x / 16)))
+                    if (!vnc_get_bit(vs->guest.dirty[y], (x / 16)) && vs->guest.ds->width - x - 1 >= 16)
                         continue;
                     vnc_clear_bit(vs->guest.dirty[y], (x / 16));
                     if (memcmp(server_ptr, guest_ptr, cmp_bytes) == 0)
@@ -808,6 +808,12 @@ static void vnc_update_client(void *opaque)
                 send_framebuffer_update(vs, last_x * 16, y, (x - last_x) * 16, h);
                 n_rectangles++;
             }
+        }
+        // we may lose some pixels if width%16 != 0, so we need update in there
+        if(0 != vs->server.ds->width % 16) {
+            send_framebuffer_update(vs, vs->server.ds->width / 16 * 16,  0,
+                vs->server.ds->width % 16, vs->server.ds->height);
+            n_rectangles++;
         }
         vs->output.buffer[saved_offset] = (n_rectangles >> 8) & 0xFF;
         vs->output.buffer[saved_offset + 1] = n_rectangles & 0xFF;
