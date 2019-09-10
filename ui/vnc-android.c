@@ -742,6 +742,7 @@ static void vnc_update_client(void *opaque)
         for (y = 0; y < vs->guest.ds->height; y++) {
             if (vnc_and_bits(vs->guest.dirty[y], width_mask, VNC_DIRTY_WORDS)) {
                 int x;
+                int cp_bytes;
                 uint8_t *guest_ptr;
                 uint8_t *server_ptr;
 
@@ -755,7 +756,10 @@ static void vnc_update_client(void *opaque)
                     vnc_clear_bit(vs->guest.dirty[y], (x / 16));
                     if (memcmp(server_ptr, guest_ptr, cmp_bytes) == 0)
                         continue;
-                    memcpy(server_ptr, guest_ptr, cmp_bytes);
+                    cp_bytes = cmp_bytes;
+                    if(server_ptr - server_row + cmp_bytes > vs->guest.ds->width * ds_get_bytes_per_pixel(vs->ds))
+                        cp_bytes = vs->guest.ds->width * ds_get_bytes_per_pixel(vs->ds) - (server_ptr - server_row);
+                    memcpy(server_ptr, guest_ptr, cp_bytes);
                     vnc_set_bit(vs->server.dirty[y], (x / 16));
                     has_dirty++;
                 }
