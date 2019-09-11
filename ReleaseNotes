@@ -1,0 +1,8 @@
+V1.0--------------------
+fixed vnc core dump bug
+add back keycode support for vnc
+reduce pointer event transported to guset
+fix the bug that vnc mouse event can not be response by guest
+add screen resolution parameter
+add "./etc" as new read path for keymap
+
